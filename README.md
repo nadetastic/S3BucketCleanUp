@@ -7,7 +7,7 @@ Provide a list of bucket names to the `BUCKET_NAMES` array and invoke the functi
 Build your application by using the `sam build` command.
 
 ```bash
-my-application$ sam build
+$ sam build
 ```
 
 The AWS SAM CLI installs dependencies that are defined in `package.json`, creates a deployment package, and saves it in the `.aws-sam/build` folder.
@@ -15,7 +15,7 @@ The AWS SAM CLI installs dependencies that are defined in `package.json`, create
 Run functions locally and invoke them with the `sam local invoke` command.
 
 ```bash
-my-application$ sam local invoke --profile <profile_name>
+$ sam local invoke --profile <profile_name>
 ```
 
 ## Deploy to Lambda
@@ -23,8 +23,8 @@ my-application$ sam local invoke --profile <profile_name>
 To build and deploy your application for the first time, run the following in your shell:
 
 ```bash
-sam build
-sam deploy --guided
+$ sam build
+$ sam deploy --guided --profile <profile_name>
 ```
 
 The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts.
