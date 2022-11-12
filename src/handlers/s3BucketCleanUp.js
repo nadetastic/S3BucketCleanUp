@@ -10,16 +10,34 @@ const BUCKET_NAMES = [];
 
 exports.handler = async () => {
 
+    let contents;
     for( bucket of BUCKET_NAMES){
-        const contents = await bucketContents(bucket);
+        
+        try {
+            contents = await bucketContents(bucket);
+        } catch(e) {
+            console.error(e,bucket)
+        }
+
+        if (contents === undefined) return;
 
         if(contents.Contents.length === 0) {
             console.log(bucket,'- bucket is empty, commence deleting..');
-            await deleteBucket(bucket);
+            try {
+                await deleteBucket(bucket);
+            } catch(e){
+                console.error(e,bucket)
+            }
         } else {
             console.log(bucket,'- is not empty with',contents.Contents.length,'objects');
-            const res = await deleteManyObjs(bucket,contents.Contents);
-            // console.log('Contents',contents.Contents)
+            try {
+                await deleteManyObjs(bucket,contents.Contents);
+                console.log(bucket,' emptied...')
+                await deleteBucket(bucket);
+            } catch(e) {
+                console.error(e,bucket)
+            }
+
         }
     };
 
@@ -34,6 +52,7 @@ const bucketContents = async (bucket) => {
 
 const deleteBucket = async (bucket) => {
     var params = { Bucket: bucket };
+    console.log('Deleting',bucket + '...')
     return s3.deleteBucket(params).promise();
 }
 
